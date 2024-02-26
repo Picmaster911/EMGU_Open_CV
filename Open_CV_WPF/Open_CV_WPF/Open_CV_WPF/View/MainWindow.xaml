@@ -1,0 +1,41 @@
+﻿<Window x:Class="Open_CV_WPF.View.MainWindow"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Open_CV_WPF.View"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:view="clr-namespace:Open_CV_WPF.View.Elements"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="880"
+        Width="1500"
+        FontSize="14"  Closing="Window_Closed">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CameraFirstViewModel.ClosingCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Background="#FFC1D4ED">
+        <TabControl Style="{StaticResource MaterialDesignTabControl}">
+            <TabItem Name="FirstCamera" >
+                <TabItem.Header>
+                    <TextBlock  Text="Camera - 1"/>
+                </TabItem.Header>
+                <view:CameraFirst DataContext="{Binding CameraFirstViewModel}"></view:CameraFirst>
+            </TabItem>
+            <TabItem Name="Connections">
+                <TabItem.Header>
+                    <TextBlock Text="Camera - 2"/>
+                </TabItem.Header>
+                <view:CameraFirst DataContext="{Binding CameraSecondViewModel}"></view:CameraFirst>
+            </TabItem>
+            <TabItem Name="Connectionse">
+                <TabItem.Header>
+                    <TextBlock Text="Setting"/>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

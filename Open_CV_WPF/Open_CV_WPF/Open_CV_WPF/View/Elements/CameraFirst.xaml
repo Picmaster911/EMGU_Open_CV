@@ -1,0 +1,156 @@
+﻿<UserControl x:Class="Open_CV_WPF.View.Elements.CameraFirst"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:Open_CV_WPF.View.Elements"         
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1200"
+             >
+    <Grid Background="#FFC1D4ED">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.RowSpan="2" Margin="0,0,7,5"  >
+            <CheckBox Content="Selected Color" IsChecked="{Binding UseRedFiltr}"/>
+            <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10" Margin="0,10,0,0">
+                <StackPanel >
+                    <Label Content="Upper Bound Color"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Цветовой тон" VerticalAlignment="Center" Margin="8"/>
+                        <TextBlock Text="{Binding ElementName=UpHue, Path=Value}" VerticalAlignment="Center" Margin="8"/>
+                </StackPanel>
+                    <Slider x:Name="UpHue" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding UpHue}" Margin="8" 
+            Style="{StaticResource MaterialDesignSlider}"  />
+            <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Насыщенность" VerticalAlignment="Center" Margin="8"/>
+                        <TextBlock Text="{Binding ElementName=UpSaturation, Path=Value}" VerticalAlignment="Center" Margin="8"/>
+            </StackPanel>
+                    <Slider x:Name="UpSaturation" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding  UpSaturation}" Margin="8"
+         Style="{StaticResource MaterialDesignSlider}"/>
+            <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Яркость" VerticalAlignment="Center" Margin="8"/>
+                        <TextBlock Text="{Binding ElementName=UpValue, Path=Value}" VerticalAlignment="Center" Margin="8"/>
+            </StackPanel>
+                    <Slider x:Name="UpValue" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding UpValue }" Margin="8"
+        Style="{StaticResource MaterialDesignSlider}"/>
+            </StackPanel>
+            </Border>
+            <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10" Margin="0,10,0,0">
+                <StackPanel >
+                    <Label Content="Low Bound Color"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Цветовой тон" VerticalAlignment="Center" Margin="8"/>
+                        <TextBlock Text="{Binding ElementName=LowHue, Path=Value}" VerticalAlignment="Center" Margin="8"/>
+                    </StackPanel>
+                    <Slider x:Name="LowHue" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding LowHue}" Margin="8" 
+            Style="{StaticResource MaterialDesignSlider}"  />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Насыщенность" VerticalAlignment="Center" Margin="8"/>
+                        <TextBlock Text="{Binding ElementName=LowSaturation, Path=Value}" VerticalAlignment="Center" Margin="8"/>
+                    </StackPanel>
+                    <Slider x:Name="LowSaturation" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding  LowSaturation}" Margin="8"
+         Style="{StaticResource MaterialDesignSlider}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Яркость" VerticalAlignment="Center" Margin="8"/>
+                        <TextBlock Text="{Binding ElementName=LowValue, Path=Value}" VerticalAlignment="Center" Margin="8"/>
+                    </StackPanel>
+                    <Slider x:Name="LowValue" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding LowValue }" Margin="8"
+        Style="{StaticResource MaterialDesignSlider}"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="Input name directory :" VerticalAlignment="Center" Margin="8"/>
+            <TextBox materialDesign:HintAssist.Hint="Input name directory" Margin="8" Text="{Binding FileNameJpg, UpdateSourceTrigger=PropertyChanged}"   
+        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            <TextBox materialDesign:HintAssist.Hint="RtspUrl" Margin="8" Text="{Binding RtspUrl, UpdateSourceTrigger=PropertyChanged}"   
+        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            <CheckBox Content="Use IP Cam Path" IsChecked="{Binding UseIpUrlPath}"/>
+        </StackPanel>
+        <Image x:Name="Video"  Source="{Binding VideoSource}" Stretch="Uniform" StretchDirection="Both" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown" >
+                    <i:InvokeCommandAction Command="{Binding DataContext.ViewImageMouseDownCommand,
+                        RelativeSource={RelativeSource AncestorType=Image}}" PassEventArgsToCommand="True"
+                      />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Image>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <ComboBox Height="25"
+              HorizontalAlignment="Left"
+              Width="200"
+              Margin="0,0,45,0" 
+              ItemsSource="{Binding AllCams}" 
+              Grid.Row="1" SelectedItem="{Binding SelectedCam}"/>
+            <!-- Кнопка Play -->
+            <Button HorizontalAlignment="Left" Margin="10"
+                VerticalAlignment="Top" Width="60" Height="55" Command="{Binding PlayCommand}">
+                <StackPanel>
+                    <materialDesign:PackIcon Kind="PlayCircleOutline" Margin="5" Foreground="{Binding GreenColor}"  />
+                    <TextBlock Text="Play" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <!-- Кнопка Record -->
+            <Button HorizontalAlignment="Left" Margin="10" 
+                VerticalAlignment="Top" Width="80" Height="55" Command="{Binding StartRecordCommand}">
+                <StackPanel>
+                    <materialDesign:PackIcon Kind="FiberManualRecord" Margin="5" Foreground="{Binding RecordColor}" />
+                    <TextBlock Text="Record" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <!-- Кнопка Pause -->
+            <Button HorizontalAlignment="Left" Margin="10"
+            VerticalAlignment="Top" Width="70" Height="55" Command="{Binding PauseCommand }">
+                <StackPanel>
+                    <materialDesign:PackIcon Kind="PauseCircleOutline" Margin="5"/>
+                    <TextBlock Text="Pause" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <!-- Кнопка Stop -->
+            <Button HorizontalAlignment="Left" Margin="10"
+            Command="{Binding StopCommand}"
+            VerticalAlignment="Top" Width="70" Height="55">
+                <StackPanel>
+                    <materialDesign:PackIcon Kind="StopCircleOutline" Margin="5"/>
+                    <TextBlock Text="Stop" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Кнопка Open File -->
+            <Button Margin="10" VerticalAlignment="Top" Width="102" Height="55"
+            Command="{Binding OpenFileCommand}">
+                <StackPanel>
+                    <materialDesign:PackIcon Kind="FolderOpenOutline" Margin="5"/>
+                    <TextBlock Text="Open File" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <!-- Кнопка Add file -->
+            <Button Margin="10"
+           Command="{Binding TakeScreenshot}"
+           VerticalAlignment="Top" Width="85" Height="55">
+                <StackPanel>
+                    <materialDesign:PackIcon Kind="Add" Margin="5"/>
+                    <TextBlock Text="Add Img" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <!-- Кнопка Stop Automatic add file -->
+            <Button Margin="10"
+            Command="{Binding StopTakeScreenshot}"
+            VerticalAlignment="Top" Width="95" Height="55">
+                <StackPanel>
+                    <materialDesign:PackIcon Kind="Fabric" Margin="5"/>
+                    <TextBlock Text="Stop Add" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
